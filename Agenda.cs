@@ -27,24 +27,21 @@ namespace AgendaList
             }
             else
             {
-                do
+                if (aux.Name.CompareTo(Tail.Name) >= 0)
                 {
-                    if (Tail == Head)
-                    {
-                        if (aux.Name.CompareTo(Tail.Name) == 1)
-                        {
-                            Tail.Next = aux;
-                            Tail = aux;
-                            break;
-                        }
-                        else
-                        {
-                            aux.Next = Head;
-                            Head = aux;
-                            break;
-                        }
-                    }
-                    else
+                    aux.Previous = Tail;
+                    Tail.Next = aux;
+                    Tail = aux;
+                }
+                else if (Tail == Head)
+                {
+                    aux.Next = Head;
+                    Head.Previous = aux;
+                    Head = aux;
+                }
+                else
+                {
+                    do
                     {
                         if (aux.Name.CompareTo(aux2.Name) == -1)
                         {
@@ -54,6 +51,7 @@ namespace AgendaList
                         }
                         else if (aux.Name.CompareTo(aux2.Name) == 1 || aux.Name.CompareTo(aux2.Name) == 0)
                         {
+                            aux.Previous = aux2;
                             aux2 = aux2.Next;
                             if (aux2 == null)
                             {
@@ -69,9 +67,9 @@ namespace AgendaList
                             }
                         }
 
-                    }
-                    aux = aux.Next;
-                } while (aux != null);
+                        aux = aux.Next;
+                    } while (aux != null);
+                }
             }
         }
         public void Get() //Get - Mostrar todos os contatos
@@ -90,7 +88,7 @@ namespace AgendaList
             else
                 Console.WriteLine("Agenda vazia");
         }
-        public void SearchContact(string name) //Localizar um contato
+        public Contacts SearchContact(string name) //Localizar um contato
         {
             Contacts aux = Head;
             bool flag = false;
@@ -98,9 +96,11 @@ namespace AgendaList
             {
                 if (aux.Name.ToUpper().CompareTo(name.ToUpper()) == 0)
                 {
+
                     Console.WriteLine(aux.ToString());
                     Thread.Sleep(500);
                     flag = true;
+                    return aux;
                 }
                 aux = aux.Next;
             } while (aux != null);
@@ -108,6 +108,7 @@ namespace AgendaList
             {
                 Console.WriteLine("Nada foi encontrado");
             }
+            return null;
         }
         public void Remove(string name) // Remover um contato
         {
@@ -125,7 +126,7 @@ namespace AgendaList
                     else if (aux == Head)
                     {
                         Head = aux.Next;
-                        aux.Next = null;
+                        Head.Previous = aux.Next = null;
                     }
                     else if (aux == Tail)
                     {
@@ -158,93 +159,6 @@ namespace AgendaList
                 Console.WriteLine("Contato nao encontrado");
             }
 
-            Console.ReadKey();
-            Console.Clear();
-        }
-        public void EditContadct()//Editar o Contato
-        {
-            Console.Clear();
-            Contacts aux = Head;
-            bool flag = true;
-            Console.WriteLine("================== EDITAR ==================");
-            if (aux != null)
-            {
-                int value = 0;
-                while (value != 4)
-                {
-                    Console.WriteLine("O que deseja alterar no contato\n1 - Nome\n2 - Numero\n3 - E-mail\n4 - Voltar ao menu anterior");
-                    value = int.Parse(Console.ReadLine());
-                    string Name = "";
-                    aux = Head;
-
-                    if (value != 4)
-                    {
-                        Console.Write("\nInsira o nome do contato que deseja fazer alteracoes: ");
-                        Name = Console.ReadLine();
-                    }
-                    switch (value)
-                    {
-                        case 1:
-                            Console.Clear();
-
-                            do
-                            {
-                                if (aux.Name.ToUpper() == Name.ToUpper())
-                                {
-                                    Console.Write("Novo nome: ");
-                                    string newName = Console.ReadLine();
-                                    aux.Name = newName;
-                                    flag = false;
-                                }
-                                aux = aux.Next;
-
-
-                            } while (aux != null);
-                            break;
-                        case 2:
-                            Console.Clear();
-                            do
-                            {
-                                if (aux.Name.ToUpper() == Name.ToUpper())
-                                {
-                                    aux.EditNumber();
-                                    flag = false;
-                                    break;
-                                }
-
-                                aux = aux.Next;
-                            } while (aux != null);
-                            break;
-                        case 3:
-                            Console.Clear();
-                            do
-                            {
-                                if (aux.Name.ToUpper() == Name.ToUpper())
-                                {
-                                    Console.WriteLine("Novo e-mail: ");
-                                    string newEmail = Console.ReadLine();
-                                    aux.Email = newEmail;
-                                    flag = false;
-                                }
-                                aux = aux.Next;
-                            } while (aux != null);
-                            break;
-                        case 4:
-
-                            break;
-                        default:
-                            Console.WriteLine("Opcao nao encontrada");
-                            break;
-                    }
-                    if (flag)
-                        Console.WriteLine("Nenhum contato foi encontrado com este nome");
-                    Console.ReadKey();
-                    Console.Clear();
-                }
-
-            }
-            else
-                Console.WriteLine("Nenhum contato foi inserido na agenda");
         }
         public Contacts SearchPosition(Contacts newContact)
         {

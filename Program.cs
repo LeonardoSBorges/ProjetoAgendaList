@@ -26,16 +26,19 @@ namespace AgendaList
                 {
 
                     case 1:
+                        Console.Clear();
                         InsertName(agenda);
                         break;
                     case 2:
                         RemoveContact(agenda);
 
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case 3:
 
-                        agenda.EditContadct();
-
+                        EditContact(agenda);
+                        
                         Console.ReadKey();
                         break;
                     case 4:
@@ -45,6 +48,7 @@ namespace AgendaList
                         break;
                     case 5:
                         SearchContact(agenda);
+                        Console.ReadKey();
                         break;
                     case 6:
 
@@ -60,7 +64,6 @@ namespace AgendaList
 
         public static void InsertName(Agenda agenda)
         {
-            Console.Clear();
             Console.WriteLine("============= ADICIONANDO CONTATO ================");
             Console.Write("Nome: ");
             string name = Console.ReadLine().Trim();
@@ -70,24 +73,8 @@ namespace AgendaList
             agenda.Push(new Contacts(name, email));
         }
 
-        public static void RemoveContact(Agenda agenda)
-        {
 
-            Console.WriteLine("================== REMOVER ==================");
-            if (agenda.Head != null)
-            {
-                Console.Write("Nome:");
-                string name = Console.ReadLine().Trim();
-
-                agenda.Remove(name);
-            }
-            else
-                Console.WriteLine("Nao existe contatos que possam ser excluidos");
-
-            Console.ReadKey();
-        }
-
-        public static void SearchContact(Agenda agenda)
+        public static Contacts SearchContact(Agenda agenda)
         {
 
             Console.WriteLine("================== PESQUISAR CONTATO ==================");
@@ -96,11 +83,44 @@ namespace AgendaList
                 Console.Write("Nome:");
                 string name = Console.ReadLine().Trim();
 
-                agenda.SearchContact(name);
+                Contacts contacts = agenda.SearchContact(name);
+
+                return contacts;
             }
             else
                 Console.WriteLine("Sua agenda nao tem contatos ainda");
-            Console.ReadKey();
+            return null;
+
+        }
+
+
+        public static void RemoveContact(Agenda agenda)
+        {
+            if (agenda.Head != null)
+            {
+                Contacts contacts = SearchContact(agenda);
+
+                if (contacts != null)
+                {
+                    agenda.Remove(contacts.Name);
+                }
+            }
+            else
+                Console.WriteLine("Sua agenda nao tem contatos ainda");
+
+        }
+
+
+        public static void EditContact(Agenda agenda)
+        {
+            Contacts contacts = SearchContact(agenda);
+
+            if (contacts != null)
+            {
+                agenda.Remove(contacts.Name);
+                InsertName(agenda);
+            }
+
         }
 
 

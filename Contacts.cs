@@ -5,27 +5,19 @@ namespace AgendaList
 {
     internal class Contacts
     {
-        //Variaveis = Nome, e-mail, Telefone
         public string Name { get; set; }
         public string Email { get; set; }
         public Phone TopPhoneNumber { get; set; }
         public Contacts Next { get; set; }
         public Contacts Previous { get; set; }
-
-
-
-        //Construtor 
         public Contacts(string name, string email)
         {
             Name = name;
             Email = email;
             Next = null;
         }
-
-
-        public void AddNumber()// adicionar numero
+        public void AddNumber()
         {
-
             Phone aux = TopPhoneNumber, value;
             int Option = 0, i = 0;
             do
@@ -59,10 +51,10 @@ namespace AgendaList
                             aux.Next = value;
                             aux = aux.Next;
                         }
-
                     }
                     else if (Option != 2)
                     {
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Escolha uma opcao valida");
                         Console.ReadKey();
                     }
@@ -73,13 +65,13 @@ namespace AgendaList
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Voce atingiu o limite de numeros em um contato");
                     Console.ReadKey();
                     break;
                 }
             } while (Option != 2);
         }
-
         public void EditNumber()
         {
             Phone aux = TopPhoneNumber;
@@ -124,7 +116,6 @@ namespace AgendaList
                     break;
             } while (aux != null);
         }
-
         public override string ToString()
         {
 
@@ -141,6 +132,5 @@ namespace AgendaList
 
             return sg.ToString();
         }
-
     }
 }

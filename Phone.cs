@@ -11,14 +11,12 @@ namespace AgendaList
         public string TypeNumber { get; set; }
         public string PhoneNumber { get; set; }
         public Phone Next { get; set; }
-
         public Phone(string typeNumber, string phoneNumber)
         {
             TypeNumber = typeNumber;
             PhoneNumber = phoneNumber;
             Next = null;
         }
-
         public override string ToString()
         {
             return TypeNumber + ": " + PhoneNumber;
